@@ -1,55 +1,18 @@
-export default function Grid() {
-  function handleGridClick(e) {
-    console.log(e.target.getAttribute('data-grid-num'))
-  }
+export default function Grid({ handleGridClick, active }) {
+  const grid = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 
   return (
     <div className="grid">
-      <div
-        data-grid-num={0}
-        className="grid-field"
-        onClick={handleGridClick}
-      ></div>{' '}
-      <div
-        data-grid-num={1}
-        className="grid-field"
-        onClick={handleGridClick}
-      ></div>{' '}
-      <div
-        data-grid-num={2}
-        className="grid-field"
-        onClick={handleGridClick}
-      ></div>{' '}
-      <div
-        data-grid-num={3}
-        className="grid-field"
-        onClick={handleGridClick}
-      ></div>{' '}
-      <div
-        data-grid-num={4}
-        className="grid-field"
-        onClick={handleGridClick}
-      ></div>{' '}
-      <div
-        data-grid-num={5}
-        className="grid-field"
-        onClick={handleGridClick}
-      ></div>{' '}
-      <div
-        data-grid-num={6}
-        className="grid-field"
-        onClick={handleGridClick}
-      ></div>{' '}
-      <div
-        data-grid-num={7}
-        className="grid-field"
-        onClick={handleGridClick}
-      ></div>{' '}
-      <div
-        data-grid-num={8}
-        className="grid-field"
-        onClick={handleGridClick}
-      ></div>
+      {grid.map((g) => (
+        <div
+          key={g} // Add a unique key for each grid field
+          data-grid-num={g} // Use the grid value as the data attribute
+          className="grid-field"
+          onClick={(e) => {
+            handleGridClick(e, active);
+          }}
+        ></div>
+      ))}
     </div>
-  )
+  );
 }
