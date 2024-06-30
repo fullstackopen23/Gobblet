@@ -64,7 +64,17 @@ header {
   height: 100px;
   display: flex;
   align-items: center;
+  position: relative;
   justify-content: center;
+}
+
+.grid-field.lg::after {
+  content: '';
+  height: 30px;
+  width: 30px;
+  position: absolute;
+  background-color: red;
+  border-radius: 50%;
 }
 
 .figures-container {

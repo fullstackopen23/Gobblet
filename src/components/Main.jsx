@@ -4,19 +4,18 @@ import Grid from './Grid'
 
 export default function Main() {
   const [redsTurn, setRedsTurn] = useState(true)
-  const [blueTurn, setBlueTurn] = useState(false)
   const [gridActive, setGridActive] = useState(false)
   const [figure, setFigure] = useState(null)
   const [grid, setGrid] = useState([
-    { content: '' },
-    { content: '' },
-    { content: '' },
-    { content: '' },
-    { content: '' },
-    { content: '' },
-    { content: '' },
-    { content: '' },
-    { content: '' },
+    { content: '', class: 'grid-field' },
+    { content: '', class: 'grid-field' },
+    { content: '', class: 'grid-field' },
+    { content: '', class: 'grid-field' },
+    { content: '', class: 'grid-field' },
+    { content: '', class: 'grid-field' },
+    { content: '', class: 'grid-field' },
+    { content: '', class: 'grid-field' },
+    { content: '', class: 'grid-field' },
   ])
 
   function handleFigureClick(e, active) {
@@ -25,24 +24,24 @@ export default function Main() {
       num: e.target.getAttribute('data-num'),
       team: e.target.getAttribute('data-team'),
     }
-    console.log('hu')
-    setRedsTurn(!redsTurn)
     setFigure(attributesOfCircle)
     setGridActive(!gridActive)
   }
   function handleGridClick(e, active) {
     if (!active) return
+    const figureContent = figure.team === 'red' ? 'X' : 'O'
     const gridNumberClicked = e.target.getAttribute('data-grid-num')
-    console.log(figure)
     const updatedGrid = grid.map((gridField, i) => {
       if (i === Number(gridNumberClicked)) {
-        return { ...gridField, content: 'X' }
+        return { ...gridField, content: figureContent }
       } else {
         return gridField
       }
     })
     setGrid(updatedGrid)
-    setBlueTurn(!blueTurn)
+    setGridActive(!gridActive)
+
+    setRedsTurn(!redsTurn)
   }
   return (
     <main>
@@ -58,7 +57,7 @@ export default function Main() {
       ></Grid>
       <Figures
         handleFigureClick={handleFigureClick}
-        active={blueTurn}
+        active={!redsTurn}
         team={'blue'}
       ></Figures>
     </main>

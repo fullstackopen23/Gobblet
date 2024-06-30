@@ -6,7 +6,7 @@ export default function Grid({ handleGridClick, active, grid }) {
         <div
           key={i} // Add a unique key for each grid field
           data-grid-num={i} // Use the grid value as the data attribute
-          className="grid-field"
+          className={g.class}
           onClick={(e) => {
             handleGridClick(e, active)
           }}
