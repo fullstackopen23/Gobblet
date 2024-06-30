@@ -1,18 +1,19 @@
-export default function Grid({ handleGridClick, active }) {
-  const grid = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-
+export default function Grid({ handleGridClick, active, grid }) {
+  console.log(grid)
   return (
     <div className="grid">
-      {grid.map((g) => (
+      {grid.map((g, i) => (
         <div
-          key={g} // Add a unique key for each grid field
-          data-grid-num={g} // Use the grid value as the data attribute
+          key={i} // Add a unique key for each grid field
+          data-grid-num={i} // Use the grid value as the data attribute
           className="grid-field"
           onClick={(e) => {
-            handleGridClick(e, active);
+            handleGridClick(e, active)
           }}
-        ></div>
+        >
+          {g.content ? g.content : ''}
+        </div>
       ))}
     </div>
-  );
+  )
 }

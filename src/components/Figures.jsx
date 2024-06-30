@@ -1,7 +1,7 @@
 export default function Figures({ team, active, handleFigureClick }) {
-  let circleClass = active === true ? "active" : "inactive";
+  let circleClass = active === true ? 'active' : 'inactive'
 
-  const figures = ["lg", "lg", "md", "md", "sm", "sm"];
+  const figures = ['lg', 'lg', 'md', 'md', 'sm', 'sm']
 
   return (
     <div className="figures-container">
@@ -11,13 +11,13 @@ export default function Figures({ team, active, handleFigureClick }) {
             data-num={i}
             data-team={team}
             onClick={(e) => {
-              handleFigureClick(e, active);
+              handleFigureClick(e, active)
             }}
             key={i}
-            className={circleClass + " " + team + " circle " + figure}
+            className={circleClass + ' ' + team + ' circle ' + figure}
           ></div>
-        );
+        )
       })}
     </div>
-  );
+  )
 }
