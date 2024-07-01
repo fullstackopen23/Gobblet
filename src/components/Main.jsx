@@ -3,61 +3,63 @@ import Figures from './Figures'
 import Grid from './Grid'
 
 export default function Main() {
-  const [redsTurn, setRedsTurn] = useState(true)
-  const [gridActive, setGridActive] = useState(false)
-  const [figure, setFigure] = useState(null)
+  const [redIsNext, setRedIsNext] = useState(true)
+  const [gridClickable, setGridClickable] = useState(false)
+  const [selectedFigure, setSelectedFigure] = useState(null)
   const [grid, setGrid] = useState([
-    { content: '', class: 'grid-field' },
-    { content: '', class: 'grid-field' },
-    { content: '', class: 'grid-field' },
-    { content: '', class: 'grid-field' },
-    { content: '', class: 'grid-field' },
-    { content: '', class: 'grid-field' },
-    { content: '', class: 'grid-field' },
-    { content: '', class: 'grid-field' },
-    { content: '', class: 'grid-field' },
+    { figureSize: '', class: 'grid-field', figureColor: '' },
+    { figureSize: '', class: 'grid-field' },
+    { figureSize: '', class: 'grid-field' },
+    { figureSize: '', class: 'grid-field' },
+    { figureSize: '', class: 'grid-field' },
+    { figureSize: '', class: 'grid-field' },
+    { figureSize: '', class: 'grid-field' },
+    { figureSize: '', class: 'grid-field' },
+    { figureSize: '', class: 'grid-field' },
   ])
 
-  function handleFigureClick(e, active) {
+  function handleFigureClick(e, active, figure) {
     if (!active) return
-    const attributesOfCircle = {
+    console.log(figure)
+    const attributesOfSelectedFigure = {
       num: e.target.getAttribute('data-num'),
       team: e.target.getAttribute('data-team'),
     }
-    setFigure(attributesOfCircle)
-    setGridActive(!gridActive)
+    setSelectedFigure(attributesOfSelectedFigure)
+    setGridClickable(!gridClickable)
   }
+
   function handleGridClick(e, active) {
     if (!active) return
-    const figureContent = figure.team === 'red' ? 'X' : 'O'
+
     const gridNumberClicked = e.target.getAttribute('data-grid-num')
     const updatedGrid = grid.map((gridField, i) => {
       if (i === Number(gridNumberClicked)) {
-        return { ...gridField, content: figureContent }
+        return { ...gridField, figureColor: selectedFigure.team }
       } else {
         return gridField
       }
     })
     setGrid(updatedGrid)
-    setGridActive(!gridActive)
+    setGridClickable(!gridClickable)
 
-    setRedsTurn(!redsTurn)
+    setRedIsNext(!redIsNext)
   }
   return (
     <main>
       <Figures
         handleFigureClick={handleFigureClick}
-        active={redsTurn}
+        active={redIsNext}
         team={'red'}
       ></Figures>
       <Grid
         grid={grid}
-        active={gridActive}
+        active={gridClickable}
         handleGridClick={handleGridClick}
       ></Grid>
       <Figures
         handleFigureClick={handleFigureClick}
-        active={!redsTurn}
+        active={!redIsNext}
         team={'blue'}
       ></Figures>
     </main>

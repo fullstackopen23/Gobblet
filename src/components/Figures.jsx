@@ -5,25 +5,37 @@ export default function Figures({ team, active, handleFigureClick }) {
     {
       size: 'lg',
       set: false,
+      id: 0,
+      team,
     },
     {
       size: 'lg',
+      team,
+      id: 1,
       set: false,
+    },
+    {
+      team,
+      size: 'md',
+      set: false,
+      id: 2,
     },
     {
       size: 'md',
+      team,
       set: false,
-    },
-    {
-      size: 'md',
-      set: false,
-    },
-    {
-      size: 'sm',
-      set: false,
+      id: 3,
     },
     {
       size: 'sm',
+      team,
+      id: 4,
+      set: false,
+    },
+    {
+      team,
+      size: 'sm',
+      id: 5,
       set: false,
     },
   ]
@@ -36,7 +48,7 @@ export default function Figures({ team, active, handleFigureClick }) {
             data-num={i}
             data-team={team}
             onClick={(e) => {
-              handleFigureClick(e, active)
+              handleFigureClick(e, active, figures[i])
             }}
             key={i}
             className={
