@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Figures from './Figures'
 import Grid from './Grid'
 import { checkIfPlayable } from '../utils/utils'
+import Info from './Info'
 
 export default function Main() {
   const [redIsNext, setRedIsNext] = useState(true)
@@ -181,6 +182,10 @@ export default function Main() {
         active={!redIsNext}
         figures={blueFigures}
       ></Figures>
+      <Info
+        redIsNext={redIsNext}
+        gridClickable={gridClickable}
+      ></Info>
     </main>
   )
 }
