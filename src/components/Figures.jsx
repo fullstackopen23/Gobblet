@@ -4,7 +4,6 @@ export default function Figures({
   handleFigureClick,
 }) {
   let circleClass = active === true ? 'active' : 'inactive'
-  console.log(figures)
   return (
     <div className="figures-container">
       {figures.map((figure, i) => {

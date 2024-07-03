@@ -1,5 +1,4 @@
 export default function Grid({ handleGridClick, active, grid }) {
-  console.log(grid)
   return (
     <div className="grid">
       {grid.map((g, i) => (

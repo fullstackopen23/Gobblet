@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Figures from './Figures'
 import Grid from './Grid'
+import { checkIfPlayable } from '../utils/utils'
 
 export default function Main() {
   const [redIsNext, setRedIsNext] = useState(true)
@@ -105,6 +106,17 @@ export default function Main() {
     if (!active) return
 
     const gridNumberClicked = e.target.getAttribute('data-grid-num')
+    if (grid[gridNumberClicked].figureOnGrid) {
+      if (
+        !checkIfPlayable(
+          grid[gridNumberClicked].figureOnGrid,
+          selectedFigure
+        )
+      ) {
+        return
+      }
+    }
+
     const updatedGrid = grid.map((gridField, i) => {
       if (i === Number(gridNumberClicked)) {
         return { ...gridField, figureOnGrid: selectedFigure }
