@@ -50,7 +50,7 @@ header {
 }
 
 .grid {
-  background-color: rgb(86, 179, 143);
+  background-color: rgb(79, 156, 104);
   height: 300px;
   width: 300px;
   display: flex;
@@ -120,6 +120,10 @@ header {
   position: absolute;
   background-color: rgb(55, 0, 255);
   border-radius: 50%;
+}
+
+.grid-field.playable.active {
+  background-color: rgb(109, 214, 142);
 }
 
 .figures-container {

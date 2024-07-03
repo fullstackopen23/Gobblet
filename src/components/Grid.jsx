@@ -6,11 +6,15 @@ export default function Grid({ handleGridClick, active, grid }) {
           key={i} // Add a unique key for each grid field
           data-grid-num={i} // Use the grid value as the data attribute
           className={
-            g.class +
+            'grid-field' +
             ' ' +
             (g.figureOnGrid ? g.figureOnGrid.size : '') +
             ' ' +
-            (g.figureOnGrid ? g.figureOnGrid.team : '')
+            (g.figureOnGrid ? g.figureOnGrid.team : '') +
+            ' ' +
+            (g.playable ? 'playable' : 'unplayable') +
+            ' ' +
+            (active ? 'active' : '')
           }
           onClick={(e) => {
             handleGridClick(e, active)

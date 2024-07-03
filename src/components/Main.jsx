@@ -8,15 +8,15 @@ export default function Main() {
   const [gridClickable, setGridClickable] = useState(false)
   const [selectedFigure, setSelectedFigure] = useState(null)
   const [grid, setGrid] = useState([
-    { class: 'grid-field' },
-    { class: 'grid-field' },
-    { class: 'grid-field' },
-    { class: 'grid-field' },
-    { class: 'grid-field' },
-    { class: 'grid-field' },
-    { class: 'grid-field' },
-    { class: 'grid-field' },
-    { class: 'grid-field' },
+    { playable: true },
+    { playable: true },
+    { playable: true },
+    { playable: true },
+    { playable: true },
+    { playable: true },
+    { playable: true },
+    { playable: true },
+    { playable: true },
   ])
   const [redFigures, setRedFigures] = useState([
     {
@@ -98,6 +98,18 @@ export default function Main() {
   function handleSelectFigureClick(e, active, figure) {
     if (!active) return
     console.log(figure)
+    const updatedGrid = grid.map((gridField) => {
+      if (gridField.figureOnGrid) {
+        if (!checkIfPlayable(gridField.figureOnGrid, figure)) {
+          return { ...gridField, playable: false }
+        } else {
+          return { ...gridField, playable: true }
+        }
+      } else {
+        return { ...gridField, playable: true }
+      }
+    })
+    setGrid(updatedGrid)
     setSelectedFigure(figure)
     setGridClickable(!gridClickable)
   }
@@ -119,7 +131,10 @@ export default function Main() {
 
     const updatedGrid = grid.map((gridField, i) => {
       if (i === Number(gridNumberClicked)) {
-        return { ...gridField, figureOnGrid: selectedFigure }
+        return {
+          ...gridField,
+          figureOnGrid: selectedFigure,
+        }
       } else {
         return gridField
       }
