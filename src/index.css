@@ -68,12 +68,57 @@ header {
   justify-content: center;
 }
 
-.grid-field.lg::after {
+.grid-field.lg.red::after {
+  content: '';
+  height: 50px;
+  width: 50px;
+  position: absolute;
+  background-color: red;
+  border-radius: 50%;
+}
+
+.grid-field.lg.blue::after {
+  content: '';
+  height: 50px;
+  width: 50px;
+  position: absolute;
+  background-color: rgb(55, 0, 255);
+  border-radius: 50%;
+}
+
+.grid-field.md.red::after {
   content: '';
   height: 30px;
   width: 30px;
   position: absolute;
   background-color: red;
+  border-radius: 50%;
+}
+
+.grid-field.md.blue::after {
+  content: '';
+  height: 30px;
+  width: 30px;
+  position: absolute;
+  background-color: rgb(55, 0, 255);
+  border-radius: 50%;
+}
+
+.grid-field.sm.red::after {
+  content: '';
+  height: 20px;
+  width: 20px;
+  position: absolute;
+  background-color: red;
+  border-radius: 50%;
+}
+
+.grid-field.sm.blue::after {
+  content: '';
+  height: 20px;
+  width: 20px;
+  position: absolute;
+  background-color: rgb(55, 0, 255);
   border-radius: 50%;
 }
 

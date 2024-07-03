@@ -7,25 +7,97 @@ export default function Main() {
   const [gridClickable, setGridClickable] = useState(false)
   const [selectedFigure, setSelectedFigure] = useState(null)
   const [grid, setGrid] = useState([
-    { figureSize: '', class: 'grid-field', figureColor: '' },
-    { figureSize: '', class: 'grid-field' },
-    { figureSize: '', class: 'grid-field' },
-    { figureSize: '', class: 'grid-field' },
-    { figureSize: '', class: 'grid-field' },
-    { figureSize: '', class: 'grid-field' },
-    { figureSize: '', class: 'grid-field' },
-    { figureSize: '', class: 'grid-field' },
-    { figureSize: '', class: 'grid-field' },
+    { class: 'grid-field' },
+    { class: 'grid-field' },
+    { class: 'grid-field' },
+    { class: 'grid-field' },
+    { class: 'grid-field' },
+    { class: 'grid-field' },
+    { class: 'grid-field' },
+    { class: 'grid-field' },
+    { class: 'grid-field' },
+  ])
+  const [redFigures, setRedFigures] = useState([
+    {
+      size: 'lg',
+      set: false,
+      id: 0,
+      team: 'red',
+    },
+    {
+      size: 'lg',
+      team: 'red',
+      id: 1,
+      set: false,
+    },
+    {
+      team: 'red',
+      size: 'md',
+      set: false,
+      id: 2,
+    },
+    {
+      size: 'md',
+      team: 'red',
+      set: false,
+      id: 3,
+    },
+    {
+      size: 'sm',
+      team: 'red',
+      id: 4,
+      set: false,
+    },
+    {
+      team: 'red',
+      size: 'sm',
+      id: 5,
+      set: false,
+    },
+  ])
+  const [blueFigures, setBlueFigures] = useState([
+    {
+      size: 'lg',
+      set: false,
+      id: 0,
+      team: 'blue',
+    },
+    {
+      size: 'lg',
+      team: 'blue',
+      id: 1,
+      set: false,
+    },
+    {
+      team: 'blue',
+      size: 'md',
+      set: false,
+      id: 2,
+    },
+    {
+      size: 'md',
+      team: 'blue',
+      set: false,
+      id: 3,
+    },
+    {
+      size: 'sm',
+      team: 'blue',
+      id: 4,
+      set: false,
+    },
+    {
+      team: 'blue',
+      size: 'sm',
+      id: 5,
+      set: false,
+    },
   ])
 
-  function handleFigureClick(e, active, figure) {
+  function handleSelectFigureClick(e, active, figure) {
     if (!active) return
     console.log(figure)
-    const attributesOfSelectedFigure = {
-      num: e.target.getAttribute('data-num'),
-      team: e.target.getAttribute('data-team'),
-    }
-    setSelectedFigure(attributesOfSelectedFigure)
+    setSelectedFigure(figure)
     setGridClickable(!gridClickable)
   }
 
@@ -35,32 +107,52 @@ export default function Main() {
     const gridNumberClicked = e.target.getAttribute('data-grid-num')
     const updatedGrid = grid.map((gridField, i) => {
       if (i === Number(gridNumberClicked)) {
-        return { ...gridField, figureColor: selectedFigure.team }
+        return { ...gridField, figureOnGrid: selectedFigure }
       } else {
         return gridField
       }
     })
     setGrid(updatedGrid)
     setGridClickable(!gridClickable)
-
+    console.log(selectedFigure)
+    if (redIsNext) {
+      const updatedFigures = redFigures.map((redFigure) => {
+        if (redFigure.id === selectedFigure.id) {
+          return { ...redFigure, set: true }
+        } else {
+          return redFigure
+        }
+      })
+      setRedFigures(updatedFigures)
+    } else {
+      const updatedFigures = blueFigures.map((blueFigure) => {
+        if (blueFigure.id === selectedFigure.id) {
+          return { ...blueFigure, set: true }
+        } else {
+          return blueFigure
+        }
+      })
+      setBlueFigures(updatedFigures)
+    }
     setRedIsNext(!redIsNext)
   }
   return (
     <main>
       <Figures
-        handleFigureClick={handleFigureClick}
+        handleFigureClick={handleSelectFigureClick}
         active={redIsNext}
-        team={'red'}
+        figures={redFigures}
       ></Figures>
       <Grid
         grid={grid}
+        selectedFigure={selectedFigure}
         active={gridClickable}
         handleGridClick={handleGridClick}
       ></Grid>
       <Figures
-        handleFigureClick={handleFigureClick}
+        handleFigureClick={handleSelectFigureClick}
         active={!redIsNext}
-        team={'blue'}
+        figures={blueFigures}
       ></Figures>
     </main>
   )

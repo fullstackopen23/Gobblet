@@ -1,4 +1,5 @@
 export default function Grid({ handleGridClick, active, grid }) {
+  console.log(grid)
   return (
     <div className="grid">
       {grid.map((g, i) => (
@@ -8,9 +9,9 @@ export default function Grid({ handleGridClick, active, grid }) {
           className={
             g.class +
             ' ' +
-            (g.figureColor ? g.figureColor : '') +
+            (g.figureOnGrid ? g.figureOnGrid.size : '') +
             ' ' +
-            (g.figureSize ? g.figureSize : '')
+            (g.figureOnGrid ? g.figureOnGrid.team : '')
           }
           onClick={(e) => {
             handleGridClick(e, active)
