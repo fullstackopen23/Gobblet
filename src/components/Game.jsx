@@ -3,7 +3,6 @@ import Figures from './Figures'
 import Board from './Board'
 import {
   checkIfPlayable,
-  returnFigure,
   returnUnplayableBoardSquares,
   selectFigure,
 } from '../utils/utils'
@@ -121,19 +120,32 @@ export default function Game() {
     setSelectedFigure(figure)
   }
 
-  function handleGridClick(id) {
-    const figureOnGrid = returnFigure(boardSquares[id])
-    if (redIsNext && figureOnGrid?.team === 'red') {
-      handleSelectFigureClick(true, figureOnGrid)
-    } else if (!redIsNext && figureOnGrid?.team === 'blue') {
-      handleSelectFigureClick(true, figureOnGrid)
+  function handleGridClick(clickedSquare) {
+    if (
+      !boardSquares[clickedSquare.id].figureOnGrid &&
+      !selectedFigure
+    )
+      return
+
+    // Play a figure which is already set
+    if (
+      redIsNext &&
+      boardSquares[clickedSquare.id].figureOnGrid?.team === 'red'
+    ) {
+      console.log('R')
+      setSelectedFigure(boardSquares[clickedSquare.id].figureOnGrid)
+    } else if (
+      !redIsNext &&
+      boardSquares[clickedSquare.id].figureOnGrid?.team === 'blue'
+    ) {
+      console.log('R')
+      setSelectedFigure(boardSquares[clickedSquare.id].figureOnGrid)
     }
 
-    if (!figureOnGrid && !selectedFigure) return
-    if (boardSquares[id].figureOnGrid) {
+    if (boardSquares[clickedSquare.id].figureOnGrid) {
       if (
         !checkIfPlayable(
-          boardSquares[id].figureOnGrid,
+          boardSquares[clickedSquare.id].figureOnGrid,
           selectedFigure
         )
       ) {
@@ -142,7 +154,7 @@ export default function Game() {
     }
 
     const updatedGrid = boardSquares.map((gridField) => {
-      if (gridField.id === Number(id)) {
+      if (gridField.id === Number(clickedSquare.id)) {
         return {
           ...gridField,
           playable: true,
@@ -154,7 +166,6 @@ export default function Game() {
     })
     if (redIsNext) {
       const updatedFigures = redFigures.map((redFigure) => {
-        console.log(redFigure, selectedFigure)
         if (redFigure.id === selectedFigure.id) {
           return { ...redFigure, set: true }
         } else {

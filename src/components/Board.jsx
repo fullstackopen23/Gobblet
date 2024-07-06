@@ -16,7 +16,7 @@ export default function Board({ handleGridClick, boardSquares }) {
             (square.playable ? 'playable' : 'unplayable')
           }
           onClick={() => {
-            handleGridClick(square.id)
+            handleGridClick(square)
           }}
         ></div>
       ))}

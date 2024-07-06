@@ -21,10 +21,6 @@ export function checkIfPlayable(figureOnGrid, selectedFigure) {
   }
 }
 
-export function returnFigure(boardSquare) {
-  console.log(boardSquare)
-}
-
 export function returnUnplayableBoardSquares(boardSquares, figure) {
   return boardSquares.map((square) => {
     if (square.figureOnGrid) {
