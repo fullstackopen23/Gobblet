@@ -1,24 +1,29 @@
 import { useState } from 'react'
 import Figures from './Figures'
-import Grid from './Grid'
-import { checkIfPlayable } from '../utils/utils'
+import Board from './Board'
+import {
+  checkIfPlayable,
+  returnFigure,
+  returnUnplayableBoardSquares,
+  selectFigure,
+} from '../utils/utils'
 import Info from './Info'
 
-export default function Main() {
+export default function Game() {
   const [redIsNext, setRedIsNext] = useState(true)
-  const [gridClickable, setGridClickable] = useState(false)
   const [selectedFigure, setSelectedFigure] = useState(null)
-  const [grid, setGrid] = useState([
-    { playable: true },
-    { playable: true },
-    { playable: true },
-    { playable: true },
-    { playable: true },
-    { playable: true },
-    { playable: true },
-    { playable: true },
-    { playable: true },
+  const [boardSquares, setBoardSquares] = useState([
+    { playable: true, id: 0 },
+    { playable: true, id: 1 },
+    { playable: true, id: 2 },
+    { playable: true, id: 3 },
+    { playable: true, id: 4 },
+    { playable: true, id: 5 },
+    { playable: true, id: 6 },
+    { playable: true, id: 7 },
+    { playable: true, id: 8 },
   ])
+
   const [redFigures, setRedFigures] = useState([
     {
       size: 'lg',
@@ -96,33 +101,39 @@ export default function Main() {
     },
   ])
 
-  function handleSelectFigureClick(e, active, figure) {
-    if (!active) return
+  function handleSelectFigureClick(figure) {
     console.log(figure)
-    const updatedGrid = grid.map((gridField) => {
-      if (gridField.figureOnGrid) {
-        if (!checkIfPlayable(gridField.figureOnGrid, figure)) {
-          return { ...gridField, playable: false }
-        } else {
-          return { ...gridField, playable: true }
-        }
-      } else {
-        return { ...gridField, playable: true }
-      }
-    })
-    setGrid(updatedGrid)
+    // darken the unplayable board tiles by setting playable to false
+    const updatedGrid = returnUnplayableBoardSquares(
+      boardSquares,
+      figure
+    )
+    // add border to the chosen figure by setting select to true
+    if (redIsNext) {
+      const updatedFigures = selectFigure(redFigures, figure)
+      setRedFigures(updatedFigures)
+    } else if (!redIsNext) {
+      const updatedFigures = selectFigure(blueFigures, figure)
+      setBlueFigures(updatedFigures)
+    }
+    // update
+    setBoardSquares(updatedGrid)
     setSelectedFigure(figure)
-    setGridClickable(!gridClickable)
   }
 
-  function handleGridClick(e, active) {
-    if (!active) return
+  function handleGridClick(id) {
+    const figureOnGrid = returnFigure(boardSquares[id])
+    if (redIsNext && figureOnGrid?.team === 'red') {
+      handleSelectFigureClick(true, figureOnGrid)
+    } else if (!redIsNext && figureOnGrid?.team === 'blue') {
+      handleSelectFigureClick(true, figureOnGrid)
+    }
 
-    const gridNumberClicked = e.target.getAttribute('data-grid-num')
-    if (grid[gridNumberClicked].figureOnGrid) {
+    if (!figureOnGrid && !selectedFigure) return
+    if (boardSquares[id].figureOnGrid) {
       if (
         !checkIfPlayable(
-          grid[gridNumberClicked].figureOnGrid,
+          boardSquares[id].figureOnGrid,
           selectedFigure
         )
       ) {
@@ -130,21 +141,20 @@ export default function Main() {
       }
     }
 
-    const updatedGrid = grid.map((gridField, i) => {
-      if (i === Number(gridNumberClicked)) {
+    const updatedGrid = boardSquares.map((gridField) => {
+      if (gridField.id === Number(id)) {
         return {
           ...gridField,
+          playable: true,
           figureOnGrid: selectedFigure,
         }
       } else {
-        return gridField
+        return { ...gridField, playable: true }
       }
     })
-    setGrid(updatedGrid)
-    setGridClickable(!gridClickable)
-    console.log(selectedFigure)
     if (redIsNext) {
       const updatedFigures = redFigures.map((redFigure) => {
+        console.log(redFigure, selectedFigure)
         if (redFigure.id === selectedFigure.id) {
           return { ...redFigure, set: true }
         } else {
@@ -162,30 +172,28 @@ export default function Main() {
       })
       setBlueFigures(updatedFigures)
     }
+
+    setBoardSquares(updatedGrid)
+    setSelectedFigure(null)
     setRedIsNext(!redIsNext)
   }
   return (
     <main>
       <Figures
         handleFigureClick={handleSelectFigureClick}
-        active={redIsNext}
+        redIsNext={redIsNext}
         figures={redFigures}
       ></Figures>
-      <Grid
-        grid={grid}
-        selectedFigure={selectedFigure}
-        active={gridClickable}
+      <Board
+        boardSquares={boardSquares}
         handleGridClick={handleGridClick}
-      ></Grid>
+      ></Board>
       <Figures
         handleFigureClick={handleSelectFigureClick}
-        active={!redIsNext}
+        redIsNext={!redIsNext}
         figures={blueFigures}
       ></Figures>
-      <Info
-        redIsNext={redIsNext}
-        gridClickable={gridClickable}
-      ></Info>
+      <Info redIsNext={redIsNext}></Info>
     </main>
   )
 }

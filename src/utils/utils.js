@@ -20,3 +20,31 @@ export function checkIfPlayable(figureOnGrid, selectedFigure) {
     return true
   }
 }
+
+export function returnFigure(boardSquare) {
+  console.log(boardSquare)
+}
+
+export function returnUnplayableBoardSquares(boardSquares, figure) {
+  return boardSquares.map((square) => {
+    if (square.figureOnGrid) {
+      if (!checkIfPlayable(square.figureOnGrid, figure)) {
+        return { ...square, playable: false }
+      } else {
+        return { ...square, playable: true }
+      }
+    } else {
+      return { ...square, playable: true }
+    }
+  })
+}
+
+export function selectFigure(figures, figure) {
+  return figures.map((fig) => {
+    if (fig.id === figure.id) {
+      return { ...fig, selected: true }
+    } else {
+      return { ...fig, selected: false }
+    }
+  })
+}

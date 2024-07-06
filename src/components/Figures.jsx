@@ -1,27 +1,30 @@
 export default function Figures({
   figures,
-  active,
   handleFigureClick,
+  redIsNext,
 }) {
-  let circleClass = active === true ? 'active' : 'inactive'
+  let circleActive = redIsNext === true ? 'active' : 'inactive'
   return (
     <div className="figures-container">
-      {figures.map((figure, i) => {
+      {figures.map((figure) => {
         if (figure.set) return
         return (
           <div
-            data-num={i}
+            data-num={figure.id}
             data-team={figure.team}
-            onClick={(e) => {
-              handleFigureClick(e, active, figures[i])
+            onClick={() => {
+              if (!redIsNext) return
+              handleFigureClick(figures[figure.id])
             }}
-            key={i}
+            key={figure.id}
             className={
-              circleClass +
+              circleActive +
               ' ' +
               figure.team +
               ' circle ' +
-              figure.size
+              figure.size +
+              ' ' +
+              (figure.selected ? 'selected' : '')
             }
           ></div>
         )
