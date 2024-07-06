@@ -48,9 +48,8 @@ header {
 
 .circle:hover {
   box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
-    rgba(0, 0, 0, 0.12) 0px -12px 30px,
-    rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px,
-    rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
 
 .grid {
@@ -70,60 +69,6 @@ header {
   align-items: center;
   position: relative;
   justify-content: center;
-}
-
-.grid-field.lg.red::after {
-  content: '';
-  height: 50px;
-  width: 50px;
-  position: absolute;
-  background-color: red;
-  border-radius: 50%;
-}
-
-.grid-field.lg.blue::after {
-  content: '';
-  height: 50px;
-  width: 50px;
-  position: absolute;
-  background-color: rgb(55, 0, 255);
-  border-radius: 50%;
-}
-
-.grid-field.md.red::after {
-  content: '';
-  height: 30px;
-  width: 30px;
-  position: absolute;
-  background-color: red;
-  border-radius: 50%;
-}
-
-.grid-field.md.blue::after {
-  content: '';
-  height: 30px;
-  width: 30px;
-  position: absolute;
-  background-color: rgb(55, 0, 255);
-  border-radius: 50%;
-}
-
-.grid-field.sm.red::after {
-  content: '';
-  height: 20px;
-  width: 20px;
-  position: absolute;
-  background-color: red;
-  border-radius: 50%;
-}
-
-.grid-field.sm.blue::after {
-  content: '';
-  height: 20px;
-  width: 20px;
-  position: absolute;
-  background-color: rgb(55, 0, 255);
-  border-radius: 50%;
 }
 
 .grid-field.unplayable {

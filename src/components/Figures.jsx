@@ -1,34 +1,45 @@
 export default function Figures({
-  figures,
+  unsetFigures,
   handleFigureClick,
   redIsNext,
 }) {
-  let circleActive = redIsNext === true ? 'active' : 'inactive'
+  let circleActive = redIsNext === true ? "active" : "inactive";
+  console.log(unsetFigures);
   return (
     <div className="figures-container">
-      {figures.map((figure) => {
-        if (figure.set) return
+      {unsetFigures.map((figure) => {
         return (
-          <div
-            data-num={figure.id}
-            data-team={figure.team}
-            onClick={() => {
-              if (!redIsNext) return
-              handleFigureClick(figures[figure.id])
-            }}
+          <Circle
+            handleFigureClick={handleFigureClick}
             key={figure.id}
-            className={
-              circleActive +
-              ' ' +
-              figure.team +
-              ' circle ' +
-              figure.size +
-              ' ' +
-              (figure.selected ? 'selected' : '')
-            }
-          ></div>
-        )
+            circleActive={circleActive}
+            figure={figure}
+          ></Circle>
+        );
       })}
     </div>
-  )
+  );
+}
+
+export function Circle({ figure, circleActive, handleFigureClick }) {
+  return (
+    <div
+      data-num={figure.id}
+      data-team={figure.team}
+      onClick={() => {
+        console.log(figure);
+        if (!circleActive) return;
+        handleFigureClick(figure);
+      }}
+      className={
+        circleActive +
+        " " +
+        figure.team +
+        " circle " +
+        figure.size +
+        " " +
+        (figure.selected ? "selected" : "")
+      }
+    ></div>
+  );
 }
