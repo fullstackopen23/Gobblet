@@ -1,212 +1,147 @@
 import { useState } from "react";
-import Figures from "./Figures";
-import Board from "./Board";
-import {
-  checkIfPlayable,
-  returnUnplayableBoardSquares,
-  selectFigure,
-} from "../utils/utils";
-import Info from "./Info";
 
 export default function Game() {
-  const [redIsNext, setRedIsNext] = useState(true);
-  const [selectedFigure, setSelectedFigure] = useState(null);
-  const [boardSquares, setBoardSquares] = useState([
-    { playable: true, id: 0 },
-    { playable: true, id: 1 },
-    { playable: true, id: 2 },
-    { playable: true, id: 3 },
-    { playable: true, id: 4 },
-    { playable: true, id: 5 },
-    { playable: true, id: 6 },
-    { playable: true, id: 7 },
-    { playable: true, id: 8 },
+  const [selectedFigure, setSelectedFigure] = useState();
+
+  const [figurePositions, setFigurePositions] = useState([
+    { team: "red", size: "large", position: 0, id: 0 },
+    { team: "red", size: "large", position: null, id: 1 },
+    { team: "red", size: "small", position: null, id: 2 },
+    { team: "red", size: "small", position: null, id: 3 },
+    { team: "blue", size: "large", position: null, id: 4 },
+    { team: "blue", size: "large", position: null, id: 5 },
+    { team: "blue", size: "small", position: null, id: 6 },
+    { team: "blue", size: "small", position: null, id: 7 },
   ]);
 
-  const [redFigures, setRedFigures] = useState([
-    {
-      size: "lg",
-      set: false,
-      id: 0,
-      team: "red",
-    },
-    {
-      size: "lg",
-      team: "red",
-      id: 1,
-      set: false,
-    },
-    {
-      team: "red",
-      size: "md",
-      set: false,
-      id: 2,
-    },
-    {
-      size: "md",
-      team: "red",
-      set: false,
-      id: 3,
-    },
-    {
-      size: "sm",
-      team: "red",
-      id: 4,
-      set: false,
-    },
-    {
-      team: "red",
-      size: "sm",
-      id: 5,
-      set: false,
-    },
-  ]);
-  const [blueFigures, setBlueFigures] = useState([
-    {
-      size: "lg",
-      set: false,
-      id: 0,
-      team: "blue",
-    },
-    {
-      size: "lg",
-      team: "blue",
-      id: 1,
-      set: false,
-    },
-    {
-      team: "blue",
-      size: "md",
-      set: false,
-      id: 2,
-    },
-    {
-      size: "md",
-      team: "blue",
-      set: false,
-      id: 3,
-    },
-    {
-      size: "sm",
-      team: "blue",
-      id: 4,
-      set: false,
-    },
-    {
-      team: "blue",
-      size: "sm",
-      id: 5,
-      set: false,
-    },
+  const [squares, setSquares] = useState([
+    { position: 0, plot: null },
+    { position: 1, plot: null },
+    { position: 2, plot: null },
+    { position: 3, plot: null },
+    { position: 4, plot: null },
+    { position: 5, plot: null },
+    { position: 6, plot: null },
+    { position: 7, plot: null },
+    { position: 8, plot: null },
   ]);
 
-  function handleSelectFigureClick(figure) {
+  return (
+    <div>
+      <Figures
+        setSelectedFigure={setSelectedFigure}
+        teamColor={"red"}
+        figurePositions={figurePositions}
+      ></Figures>
+      <Board
+        selectedFigure={selectedFigure}
+        setFigurePositions={setFigurePositions}
+        squares={squares}
+        figurePositions={figurePositions}
+      ></Board>
+      <Figures
+        setSelectedFigure={setSelectedFigure}
+        teamColor={"blue"}
+        figurePositions={figurePositions}
+      ></Figures>
+    </div>
+  );
+}
+
+function Figure({ size, team, handleSelectClick }) {
+  const classes = `figure ${size} ${team}`;
+  return (
+    <div onClick={handleSelectClick} className={classes}>
+      O
+    </div>
+  );
+}
+
+function Square({ children, handlePlaceClick, square }) {
+  if (!children) {
+    return (
+      <div
+        onClick={() => {
+          handlePlaceClick(square);
+        }}
+        className="square"
+      ></div>
+    );
+  }
+  return <div className="square">{children}</div>;
+}
+
+function Figures({ setSelectedFigure, figurePositions, teamColor }) {
+  function handleSelectClick(figure) {
     console.log(figure);
-    // darken the unplayable board tiles by setting playable to false
-    const updatedGrid = returnUnplayableBoardSquares(boardSquares, figure);
-    // add border to the chosen figure by setting select to true
-    if (redIsNext) {
-      const updatedFigures = selectFigure(redFigures, figure);
-      setRedFigures(updatedFigures);
-    } else if (!redIsNext) {
-      const updatedFigures = selectFigure(blueFigures, figure);
-      setBlueFigures(updatedFigures);
-    }
-    // update
-    setBoardSquares(updatedGrid);
     setSelectedFigure(figure);
   }
 
-  function handleGridClick(clickedSquare) {
-    if (!boardSquares[clickedSquare.id].figureOnGrid && !selectedFigure) return;
-
-    // Play a figure which is already set
-    if (
-      redIsNext &&
-      boardSquares[clickedSquare.id].figureOnGrid?.team === "red"
-    ) {
-      const updatedFigures = selectFigure(
-        redFigures,
-        boardSquares[clickedSquare.id].figureOnGrid
+  const filteredFigures = figurePositions.map((figure, i) => {
+    if (typeof figure.position !== "number" && figure.team === teamColor) {
+      return (
+        <Figure
+          handleSelectClick={() => {
+            handleSelectClick(figure);
+          }}
+          key={i}
+          team={figure.team}
+          size={figure.size}
+        ></Figure>
       );
-      setRedFigures(updatedFigures);
-      setSelectedFigure(boardSquares[clickedSquare.id].figureOnGrid);
-      return;
-    } else if (
-      !redIsNext &&
-      boardSquares[clickedSquare.id].figureOnGrid?.team === "blue"
-    ) {
-      console.log("R");
-      setSelectedFigure(boardSquares[clickedSquare.id].figureOnGrid);
-      return;
+    } else {
+      return null;
     }
+  });
+  return <div className="figures">{filteredFigures}</div>;
+}
 
-    if (boardSquares[clickedSquare.id].figureOnGrid) {
-      if (
-        !checkIfPlayable(
-          boardSquares[clickedSquare.id].figureOnGrid,
-          selectedFigure
-        )
-      ) {
-        return;
-      }
-    }
-
-    const updatedGrid = boardSquares.map((gridField) => {
-      if (gridField.id === Number(clickedSquare.id)) {
-        return {
-          ...gridField,
-          playable: true,
-          figureOnGrid: selectedFigure,
-        };
+function Board({
+  selectedFigure,
+  setFigurePositions,
+  figurePositions,
+  squares,
+}) {
+  function handlePlaceClick(square) {
+    if (!selectedFigure) return;
+    const updatedFigurePositions = figurePositions.map((figure) => {
+      if (figure.id === selectedFigure.id) {
+        return { ...figure, position: square.position };
       } else {
-        return { ...gridField, playable: true };
+        return figure;
       }
     });
-    if (redIsNext) {
-      const updatedFigures = redFigures.map((redFigure) => {
-        if (redFigure.id === selectedFigure.id) {
-          return { ...redFigure, set: true };
-        } else {
-          return redFigure;
-        }
-      });
-      console.log(updatedFigures);
-      setRedFigures(updatedFigures);
-    } else {
-      const updatedFigures = blueFigures.map((blueFigure) => {
-        if (blueFigure.id === selectedFigure.id) {
-          return { ...blueFigure, set: true };
-        } else {
-          return blueFigure;
-        }
-      });
-      setBlueFigures(updatedFigures);
-    }
-
-    setBoardSquares(updatedGrid);
-    setSelectedFigure(false);
-    setRedIsNext(!redIsNext);
+    setFigurePositions(updatedFigurePositions);
   }
-  return (
-    <main>
-      <Figures
-        unsetFigures={redFigures.filter((f) => !f.set)}
-        handleFigureClick={handleSelectFigureClick}
-        redIsNext={redIsNext}
-      ></Figures>
-      <Board
-        boardSquares={boardSquares}
-        handleGridClick={handleGridClick}
-        setRedFigures={redFigures.filter((f) => f.set).map((f) => f.id)}
-        setBlueFigures={blueFigures.filter((f) => f.set)}
-      ></Board>
-      <Figures
-        handleFigureClick={handleSelectFigureClick}
-        redIsNext={!redIsNext}
-        unsetFigures={blueFigures.filter((f) => !f.set)}
-      ></Figures>
-      <Info redIsNext={redIsNext}></Info>
-    </main>
-  );
+
+  const renderSquares = squares.map((square) => {
+    const filterFigures = figurePositions.filter(
+      (fig) => fig.position === square.position
+    );
+    if (filterFigures.length === 0) {
+      return (
+        <Square
+          handlePlaceClick={handlePlaceClick}
+          square={square}
+          key={square.position}
+        ></Square>
+      );
+    } else {
+      return (
+        <Square
+          square={square}
+          handlePlaceClick={handlePlaceClick}
+          key={square.position}
+          setFigurePositions={setFigurePositions}
+        >
+          <Figure
+            team={filterFigures[0].team}
+            size={filterFigures[0].size}
+          ></Figure>
+        </Square>
+      );
+    }
+  });
+
+  return <div className="board">{renderSquares}</div>;
 }
